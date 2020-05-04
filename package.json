@@ -120,7 +120,7 @@
     "redux",
     "typescript",
     "markdown",
-    "editor",
+    "editor"
   ],
   "homepage": "https://github.com/jacobdcastro/zero-markdown-editor#readme",
   "jest": {
