@@ -1,13 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import routes from '../constants/routes.json';
-import styles from './Home.css';
+import ZeroEditor from './ZeroEditor';
+import Editor from './styled/Editor';
+import FileSidebar from './FileSidebar';
+import styled from 'styled-components';
 
-export default function Home() {
+const HomeWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const Home = () => {
   return (
-    <div className={styles.container} data-tid="container">
-      <h2>Home</h2>
-      <Link to={routes.COUNTER}>to Counter</Link>
-    </div>
+    <HomeWrapper>
+      <FileSidebar />
+      <Editor data-tid="container">
+        <ZeroEditor />
+      </Editor>
+    </HomeWrapper>
   );
-}
+};
+
+export default Home;
