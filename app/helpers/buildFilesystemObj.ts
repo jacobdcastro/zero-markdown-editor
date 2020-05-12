@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
+type fsNode = DirectoryObj | FileObj;
+type fsNodeType = 'dir' | 'file';
+
 const folderPath = path.join(
   '/',
   'Users',
@@ -10,8 +13,12 @@ const folderPath = path.join(
   'data'
 );
 
-class Directory {
-  constructor(name, path, depth) {
+class DirectoryObj {
+  type: 'dir';
+  isOpen: boolean;
+  children: fsNode[];
+
+  constructor(public name: string, public path: string, public depth: number) {
     this.type = 'dir';
     this.name = name ? name : '';
     this.path = path;
@@ -20,13 +27,13 @@ class Directory {
     this.children = [];
   }
 
-  addChild(n) {
+  addChild(n: fsNode) {
     this.children.push(n);
     this.sortChildren();
   }
 
   sortChildren() {
-    this.children.sort((a, b) => {
+    this.children.sort((a: fsNode, b: fsNode): number => {
       if (
         (a.type === 'dir' && b.type === 'dir') ||
         (a.type === 'file' && b.type === 'file')
@@ -43,8 +50,9 @@ class Directory {
   }
 }
 
-class File {
-  constructor(name, path, depth) {
+class FileObj {
+  type: 'file';
+  constructor(public name: string, public path: string, public depth: number) {
     this.type = 'file';
     this.name = name ? name : '';
     this.path = path;
@@ -52,18 +60,19 @@ class File {
   }
 }
 
-let parentDir = new Directory('data', folderPath, 0);
+let parentDir = new DirectoryObj('data', folderPath, 0);
 
-const createDirObj = dir => {
+const createDirObj = (dir: DirectoryObj) => {
   const dirContents = fs.readdirSync(dir.path);
 
-  dirContents.forEach(child => {
+  dirContents.forEach((child: string) => {
     const newPath = path.join(dir.path, child);
     const stats = fs.statSync(newPath);
 
-    if (stats.isFile()) dir.addChild(new File(child, newPath, dir.depth + 1));
+    if (stats.isFile())
+      dir.addChild(new FileObj(child, newPath, dir.depth + 1));
     if (stats.isDirectory()) {
-      const newDir = new Directory(child, newPath, dir.depth + 1);
+      const newDir = new DirectoryObj(child, newPath, dir.depth + 1);
       createDirObj(newDir);
       dir.addChild(newDir);
     }
