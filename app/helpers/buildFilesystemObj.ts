@@ -1,38 +1,33 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
-type fsNode = DirectoryObj | FileObj;
-type fsNodeType = 'dir' | 'file';
+export type fsNode = Directory | File;
 
-const folderPath = path.join(
-  '/',
-  'Users',
-  'jdcas',
-  'jdc-web',
-  'zero-markdown-editor',
-  'data'
-);
-
-class DirectoryObj {
+export class Directory {
+  id: string;
   type: 'dir';
   isOpen: boolean;
   children: fsNode[];
 
   constructor(public name: string, public path: string, public depth: number) {
+    this.id = uuidv4();
     this.type = 'dir';
     this.name = name ? name : '';
     this.path = path;
     this.isOpen = false;
     this.depth = depth;
     this.children = [];
+    this.addChild = this.addChild;
+    this.fillChildren();
   }
 
-  addChild(n: fsNode) {
+  public addChild(n: fsNode) {
     this.children.push(n);
     this.sortChildren();
   }
 
-  sortChildren() {
+  private sortChildren() {
     this.children.sort((a: fsNode, b: fsNode): number => {
       if (
         (a.type === 'dir' && b.type === 'dir') ||
@@ -48,36 +43,35 @@ class DirectoryObj {
       return 0;
     });
   }
+
+  // recursive function to fill children arrays in each directory
+  private fillChildren() {
+    const dirContents = fs.readdirSync(this.path);
+
+    dirContents.forEach((child: string) => {
+      const newPath = path.join(this.path, child);
+      const stats = fs.statSync(newPath);
+
+      if (stats.isFile())
+        this.addChild(new File(child, newPath, this.depth + 1));
+      if (stats.isDirectory()) {
+        const newDir = new Directory(child, newPath, this.depth + 1);
+        this.addChild(newDir);
+      }
+    });
+  }
 }
 
-class FileObj {
+export class File {
+  id: string;
   type: 'file';
+  children: null;
   constructor(public name: string, public path: string, public depth: number) {
+    this.id = uuidv4();
     this.type = 'file';
     this.name = name ? name : '';
     this.path = path;
     this.depth = depth;
+    this.children = null;
   }
 }
-
-let parentDir = new DirectoryObj('data', folderPath, 0);
-
-const createDirObj = (dir: DirectoryObj) => {
-  const dirContents = fs.readdirSync(dir.path);
-
-  dirContents.forEach((child: string) => {
-    const newPath = path.join(dir.path, child);
-    const stats = fs.statSync(newPath);
-
-    if (stats.isFile())
-      dir.addChild(new FileObj(child, newPath, dir.depth + 1));
-    if (stats.isDirectory()) {
-      const newDir = new DirectoryObj(child, newPath, dir.depth + 1);
-      createDirObj(newDir);
-      dir.addChild(newDir);
-    }
-  });
-};
-
-createDirObj(parentDir);
-console.log(parentDir);
