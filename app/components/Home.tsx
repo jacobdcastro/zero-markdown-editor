@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <HomeWrapper>
       <FileSidebar />
-      <Editor data-tid="container">
+      <Editor data-tid="container" id="editor-container">
         <ZeroEditor />
       </Editor>
     </HomeWrapper>
