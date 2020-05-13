@@ -4,7 +4,15 @@ const Editor = styled.div`
   position: relative;
   height: 100vh;
   font-family: 'Helvetica', 'Arial', sans-serif;
-  padding: 25px;
+  width: 100%;
+
+  .RichEditor-root {
+    margin: 35px 225px 75px;
+  }
+
+  .content-block {
+    margin-bottom: 21px;
+  }
 
   input,
   textarea {
@@ -72,8 +80,12 @@ const Editor = styled.div`
     border-color: blue;
   }
 
-  [data-slate-editor] > * + * {
-    margin-top: 1em;
+  #placeholder-6ig32 {
+    color: red;
+  }
+
+  .RichEditor-editor {
+    margin: 20px 10px;
   }
 `;
 
