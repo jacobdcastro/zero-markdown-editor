@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BlockStyleControls, InlineStyleControls } from './EditorControls';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertFromRaw } from 'draft-js';
+import { useSelector } from 'react-redux';
+import { markdownToDraft } from 'markdown-draft-js';
 
 const ZeroEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const activeFileContent = useSelector(state => state.editor.content);
+
+  useEffect(() => {
+    const rawDraftObj = markdownToDraft(activeFileContent);
+    const contentState = convertFromRaw(rawDraftObj);
+    const newEditorState = EditorState.createWithContent(contentState);
+    setEditorState(newEditorState);
+  }, [activeFileContent]);
 
   const _toggleBlockType = blockType => {
     setEditorState(RichUtils.toggleBlockType(editorState, blockType));
