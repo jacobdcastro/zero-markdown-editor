@@ -1594,7 +1594,7 @@
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
   integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
 
-"@types/draft-js@^0.10.40":
+"@types/draft-js@*", "@types/draft-js@^0.10.40":
   version "0.10.40"
   resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.40.tgz#d722364aa46f5a998fc22c79a5157edf336c7350"
   integrity sha512-XMkk8pamH/XwSOpEk/B6wFB0Y6LvMFWQZZaIVjzQUH2GCpFxbugo8gYpETsNMkJrGb3yb7hhFjjT1SyJ8AbXjA==
@@ -1709,6 +1709,13 @@
   version "4.14.150"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.150.tgz#649fe44684c3f1fcb6164d943c5a61977e8cf0bd"
   integrity sha512-kMNLM5JBcasgYscD9x/Gvr6lTAv2NVgsKtet/hm93qMyf/D1pt+7jeEZklKJKxMVmXjxbRVQQGfqDSfipYCO6w==
+
+"@types/markdown-draft-js@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@types/markdown-draft-js/-/markdown-draft-js-2.2.1.tgz#7bc687b73677129b44d2df8d3075234ba77e226d"
+  integrity sha512-o0RVL1A/B5FRibwEOi+P3X1oSZM0pJcD9derqkwgCSwjtkW2jPfkE6t/AQM20Vgrm0LvV1oHts3+cEyaIDX5LA==
+  dependencies:
+    "@types/draft-js" "*"
 
 "@types/minimatch@*":
   version "3.0.3"

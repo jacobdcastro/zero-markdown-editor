@@ -8,11 +8,13 @@ export const DELETE_FILE = 'DELETE_FILE';
 // Editor
 export const OPEN_MD_FILE = 'OPEN_MD_FILE';
 export const VIEW_IMG_FILE = 'VIEW_IMG_FILE';
+export const EDIT_CONTENTS = 'EDIT_CONTENTS';
 
 // Auth
 // LOGIN_GITHUB
 // LOGIN_DROPBOX
 // LOGIN_ZERO
 
-// Error
+// Notifcations
+export const NEW_SUCCESS = 'NEW_SUCCESS';
 export const NEW_ERROR = 'NEW_ERROR';

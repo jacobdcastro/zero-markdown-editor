@@ -1,13 +1,22 @@
 import fs from 'fs';
-import File from '../../helpers/buildFilesystemObj';
-import { OPEN_MD_FILE } from './actionTypes';
-import store from '../store/configureStore';
+import { File } from '../../helpers/buildFilesystemObj';
+import { OPEN_MD_FILE, EDIT_CONTENTS } from './actionTypes';
 
 export function openMdFile(fileNode: File) {
   // get string of markdown content
   const content: string = fs.readFileSync(fileNode.path, 'utf8');
-  const payload = { filetype: 'md', id: fileNode.id, content };
+  const payload = {
+    id: fileNode.id,
+    filetype: 'md',
+    path: fileNode.path,
+    hasUnsavedEdits: false,
+    content
+  };
   return { type: OPEN_MD_FILE, payload };
+}
+
+export function makeEdits() {
+  return { type: EDIT_CONTENTS };
 }
 
 export function viewImgFile(filePath: string) {

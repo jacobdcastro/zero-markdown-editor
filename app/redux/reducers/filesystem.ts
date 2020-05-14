@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { SET_INIT_FS } from '../actions/actionTypes';
+import { SET_INIT_FS, SAVE_FILE } from '../actions/actionTypes';
 
 interface FsAction {
   type: string;
