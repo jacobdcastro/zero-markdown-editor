@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import FileTree from './styled/FileSidebar';
 import path from 'path';
 import { useDispatch, useSelector } from 'react-redux';
-import { Directory, fsNode } from '../helpers/buildFilesystemObj';
-import { SET_INIT_FS } from '../redux/actions/actionTypes';
+import { fsNode } from '../helpers/buildFilesystemObj';
+import { setInitFilesystem } from '../redux/actions/filesystem';
+
 import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -23,8 +24,7 @@ const FileSidebar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let projectDir = new Directory('data', folderPath, 0);
-    dispatch({ type: SET_INIT_FS, payload: projectDir });
+    dispatch(setInitFilesystem(folderPath));
   }, []);
 
   const renderTree = (node: fsNode) => (
