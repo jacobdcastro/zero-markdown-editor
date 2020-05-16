@@ -1,9 +1,9 @@
 import React from 'react';
 import path from 'path';
 import TreeItem from '@material-ui/lab/TreeItem';
-import { fsNode } from '../helpers/buildFilesystemObj';
+import { fsNode } from '../../helpers/buildFilesystemObj';
 import { useDispatch, useSelector } from 'react-redux';
-import { openMdFile } from '../redux/actions/editor';
+import { openMdFile } from '../../redux/actions/editor';
 
 interface TreeItemProps {
   node: fsNode;

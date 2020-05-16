@@ -1,7 +1,7 @@
 import React from 'react';
-import ZeroEditor from './ZeroEditor';
+import ZeroEditor from './EditorView/ZeroEditor';
 import Editor from './styled/Editor';
-import FileSidebar from './FileSidebar';
+import FileSidebar from './FileTreeView/FileSidebar';
 import styled from 'styled-components';
 
 const HomeWrapper = styled.div`

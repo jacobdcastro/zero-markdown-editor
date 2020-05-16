@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EditorState } from 'draft-js';
-import EditorControlButton from './styled/EditorControlButton';
+import EditorControlButton from '../styled/EditorControlButton';
 
 const StyleButton = (props: any) => {
   const onToggle = (e: MouseEvent) => {

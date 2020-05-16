@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import FileTree from './styled/FileSidebar';
+import FileTree from '../styled/FileSidebar';
 import path from 'path';
 import { useDispatch, useSelector } from 'react-redux';
-import { fsNode } from '../helpers/buildFilesystemObj';
-import { setInitFilesystem } from '../redux/actions/filesystem';
+import { fsNode } from '../../helpers/buildFilesystemObj';
+import { setInitFilesystem } from '../../redux/actions/filesystem';
 
 import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';

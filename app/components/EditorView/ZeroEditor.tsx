@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, createContext } from 'react';
 import { BlockStyleControls, InlineStyleControls } from './EditorControls';
-import keyBindingFn from '../helpers/keyBindings';
+import keyBindingFn from '../../helpers/keyBindings';
 import {
-  Editor,
   EditorState,
   RichUtils,
   convertFromRaw,
@@ -10,11 +9,11 @@ import {
   DraftHandleValue
 } from 'draft-js';
 import { useSelector, useDispatch } from 'react-redux';
-import { saveFile } from '../redux/actions/filesystem';
 import { markdownToDraft } from 'markdown-draft-js';
-import { SAVE_FILE, EDIT_CONTENTS } from '../redux/actions/actionTypes';
-import { makeEdits } from '../redux/actions/editor';
-import contentHasChanged from '../helpers/contentHasChanged';
+import { makeEdits } from '../../redux/actions/editor';
+import { saveFile } from '../../redux/actions/filesystem';
+import contentHasChanged from '../../helpers/contentHasChanged';
+import DraftEditor from './DraftEditor';
 
 const ZeroEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -53,8 +52,7 @@ const ZeroEditor = () => {
 
   const handleKeyCommand = (command: string): DraftHandleValue => {
     if (command === 'editor-save') {
-      // dispatch(saveFile(activeFile.path, editorState));
-      dispatch({ type: SAVE_FILE, msg: 'FileSaved' });
+      dispatch(saveFile(activeFile.path, editorState));
       return 'handled';
     }
     return 'not-handled';
@@ -68,16 +66,16 @@ const ZeroEditor = () => {
     return null;
   };
 
-  const handleOnChange = (newState: EditorState) => {
-    setEditorState(newState);
-    if (
-      contentHasChanged(newState, activeFile) &&
-      !activeFile.hasUnsavedEdits
-    ) {
-      dispatch({ type: EDIT_CONTENTS });
-      // console.log('poop');
-    }
-  };
+  // ?! !WTF?!?!?!?!?!?!
+  const handleOnChange = useCallback(
+    (newState: EditorState) => {
+      setEditorState(newState);
+      if (contentHasChanged(editorState, activeFile)) {
+        dispatch(makeEdits());
+      }
+    },
+    [dispatch, activeFile, editorState]
+  );
 
   return (
     <div className="RichEditor-root">
@@ -90,7 +88,7 @@ const ZeroEditor = () => {
         onToggle={_toggleInlineStyle}
       />
       <div className={className} onClick={focus}>
-        <Editor
+        <DraftEditor
           blockStyleFn={blockStyleFn}
           customStyleMap={styleMap}
           editorState={editorState}
