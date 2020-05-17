@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, createContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BlockStyleControls, InlineStyleControls } from './EditorControls';
-import keyBindingFn from '../../helpers/keyBindings';
 import {
   EditorState,
   RichUtils,
@@ -10,14 +9,13 @@ import {
 } from 'draft-js';
 import { useSelector, useDispatch } from 'react-redux';
 import { markdownToDraft } from 'markdown-draft-js';
-import { makeEdits } from '../../redux/actions/editor';
-import { saveFile } from '../../redux/actions/filesystem';
+import { makeEdits } from '../../redux/actions/activeFile';
 import contentHasChanged from '../../helpers/contentHasChanged';
 import DraftEditor from './DraftEditor';
 
 const ZeroEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const activeFile = useSelector(state => state.editor);
+  const activeFile = useSelector(state => state.activeFile);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,7 +23,7 @@ const ZeroEditor = () => {
     const contentState = convertFromRaw(rawDraftObj);
     const newEditorState = EditorState.createWithContent(contentState);
     setEditorState(newEditorState);
-  }, [activeFile]);
+  }, [activeFile.id]);
 
   const _toggleBlockType = (blockType: string) => {
     setEditorState(RichUtils.toggleBlockType(editorState, blockType));
@@ -50,27 +48,13 @@ const ZeroEditor = () => {
     }
   }
 
-  const handleKeyCommand = (command: string): DraftHandleValue => {
-    if (command === 'editor-save') {
-      dispatch(saveFile(activeFile.path, editorState));
-      return 'handled';
-    }
-    return 'not-handled';
-  };
-
-  const blockStyleFn = (contentBlock: ContentBlock) => {
-    const type = contentBlock.getType();
-    if (type === 'unstyled') {
-      return 'content-block';
-    }
-    return null;
-  };
-
-  // ?! !WTF?!?!?!?!?!?!
   const handleOnChange = useCallback(
     (newState: EditorState) => {
       setEditorState(newState);
-      if (contentHasChanged(editorState, activeFile)) {
+      if (
+        contentHasChanged(newState, activeFile) &&
+        !activeFile.hasUnsavedEdits
+      ) {
         dispatch(makeEdits());
       }
     },
@@ -89,13 +73,9 @@ const ZeroEditor = () => {
       />
       <div className={className} onClick={focus}>
         <DraftEditor
-          blockStyleFn={blockStyleFn}
-          customStyleMap={styleMap}
           editorState={editorState}
-          keyBindingFn={keyBindingFn}
-          handleKeyCommand={handleKeyCommand}
           onChange={handleOnChange}
-          spellCheck={true}
+          activeFile={activeFile}
         />
       </div>
     </div>
@@ -103,13 +83,3 @@ const ZeroEditor = () => {
 };
 
 export default ZeroEditor;
-
-// Custom overrides for "code" style.
-const styleMap = {
-  CODE: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-    fontSize: 16,
-    padding: 2
-  }
-};
