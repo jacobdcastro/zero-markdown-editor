@@ -1,14 +1,15 @@
 import { Action } from 'redux';
-import { OPEN_MD_FILE, SAVE_FILE, EDIT_CONTENTS } from '../actions/actionTypes';
+import { CHANGE_EDITOR_MODE } from '../actions/actionTypes';
 
-export default function editor(state = {}, action: Action<string>) {
+export default function activeFile(
+  state = { mode: 'rich' },
+  action: Action<string>
+) {
   switch (action.type) {
-    case OPEN_MD_FILE:
-      return { ...action.payload };
-    case SAVE_FILE:
-      return { ...state, hasUnsavedEdits: false };
-    case EDIT_CONTENTS:
-      return { ...state, hasUnsavedEdits: true };
+    case CHANGE_EDITOR_MODE:
+      return {
+        ...action.payload
+      };
     default:
       return state;
   }
