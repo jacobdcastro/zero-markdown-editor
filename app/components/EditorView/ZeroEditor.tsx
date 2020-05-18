@@ -1,28 +1,26 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { MarkdownContext } from '../../containers/MarkdownContext';
 import { BlockStyleControls, InlineStyleControls } from './EditorControls';
-import {
-  EditorState,
-  RichUtils,
-  convertFromRaw,
-  ContentBlock,
-  DraftHandleValue
-} from 'draft-js';
+import { EditorState, RichUtils } from 'draft-js';
 import { useSelector, useDispatch } from 'react-redux';
-import { markdownToDraft } from 'markdown-draft-js';
 import { makeEdits } from '../../redux/actions/activeFile';
 import contentHasChanged from '../../helpers/contentHasChanged';
 import DraftEditor from './DraftEditor';
+import {
+  convertMdToDraft,
+  convertDraftToMd
+} from '../../helpers/mdDraftConversion';
 
 const ZeroEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const activeFile = useSelector(state => state.activeFile);
+  const editorMode = useSelector(state => state.editor.mode);
   const dispatch = useDispatch();
+  const { setMd } = useContext(MarkdownContext);
 
   useEffect(() => {
-    const rawDraftObj = markdownToDraft(activeFile.content);
-    const contentState = convertFromRaw(rawDraftObj);
-    const newEditorState = EditorState.createWithContent(contentState);
-    setEditorState(newEditorState);
+    setEditorState(convertMdToDraft(activeFile));
+    setMd(activeFile.content);
   }, [activeFile.id]);
 
   const _toggleBlockType = (blockType: string) => {
@@ -51,8 +49,10 @@ const ZeroEditor = () => {
   const handleOnChange = useCallback(
     (newState: EditorState) => {
       setEditorState(newState);
+      const mdString = convertDraftToMd(newState);
+      setMd(mdString);
       if (
-        contentHasChanged(newState, activeFile) &&
+        contentHasChanged(mdString, activeFile) &&
         !activeFile.hasUnsavedEdits
       ) {
         dispatch(makeEdits());

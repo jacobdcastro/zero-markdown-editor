@@ -4,8 +4,11 @@ import {
   Menu,
   shell,
   BrowserWindow,
-  MenuItemConstructorOptions
+  MenuItemConstructorOptions,
+  webContents
 } from 'electron';
+import { SAVE_FILE, CREATE_FILE } from './redux/actions/actionTypes';
+import { mainWindow } from './main.dev';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -200,13 +203,23 @@ export default class MenuBuilder {
         submenu: [
           {
             label: '&Open',
-            accelerator: 'Ctrl+O'
+            accelerator: 'Ctrl+O',
+            click: () => {
+              console.log('open file....');
+            }
           },
           {
-            label: '&Close',
-            accelerator: 'Ctrl+W',
+            label: '&Save',
+            accelerator: 'Ctrl+S',
             click: () => {
-              this.mainWindow.close();
+              mainWindow?.webContents.send(SAVE_FILE);
+            }
+          },
+          {
+            label: '&Save As',
+            accelerator: 'Ctrl+Shift+S',
+            click: () => {
+              mainWindow?.webContents.send(CREATE_FILE);
             }
           }
         ]
@@ -268,12 +281,6 @@ export default class MenuBuilder {
               shell.openExternal(
                 'https://github.com/electron/electron/tree/master/docs#readme'
               );
-            }
-          },
-          {
-            label: 'Community Discussions',
-            click() {
-              shell.openExternal('https://www.electronjs.org/community');
             }
           },
           {

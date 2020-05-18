@@ -8,9 +8,9 @@ interface FsAction {
 
 export default function filesystem(state = [], action: Action<FsAction>) {
   switch (action.type) {
-    case NEW_ERROR:
+    case SAVE_FILE:
       return { type: 'err', msg: action.msg };
-    case NEW_SUCCESS:
+    case SAVE_FILE:
       return { type: 'suc', msg: action.msg };
 
     default:

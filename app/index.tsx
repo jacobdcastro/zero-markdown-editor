@@ -5,7 +5,7 @@ import Root from './containers/Root';
 import { configureStore, history } from './redux/store/configureStore';
 import './utils/normalize.css';
 
-const store = configureStore();
+export const store = configureStore();
 
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 

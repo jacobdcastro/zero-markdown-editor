@@ -1,6 +1,5 @@
 import { CHANGE_EDITOR_MODE } from './actionTypes';
-
-type EditorMode = 'raw' | 'preview' | 'rich';
+import { EditorMode } from '../../constants/types';
 
 export function changeEditorMode(mode: EditorMode) {
   return { type: CHANGE_EDITOR_MODE, mode };

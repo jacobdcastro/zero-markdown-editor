@@ -1,20 +1,11 @@
 import React, { memo } from 'react';
-import {
-  Editor,
-  EditorState,
-  RichUtils,
-  convertFromRaw,
-  ContentBlock,
-  DraftHandleValue
-} from 'draft-js';
+import { Editor, EditorState, ContentBlock } from 'draft-js';
 import keyBindingFn from '../../helpers/keyBindings';
-import { saveFile } from '../../redux/actions/filesystem';
-import { useDispatch } from 'react-redux';
 import { fsNode } from '../../helpers/buildFilesystemObj';
 
 interface DraftEditorProps {
   editorState: EditorState;
-  onChange: (newState: EditorState) => {};
+  onChange: (newState: EditorState) => void;
   activeFile: fsNode;
 }
 
@@ -28,38 +19,25 @@ const styleMap = {
   }
 };
 
-const DraftEditor = memo(
-  ({ editorState, onChange, activeFile }: DraftEditorProps) => {
-    const dispatch = useDispatch();
+const DraftEditor = memo(({ editorState, onChange }: DraftEditorProps) => {
+  const blockStyleFn = (contentBlock: ContentBlock) => {
+    const type = contentBlock.getType();
+    if (type === 'unstyled') {
+      return 'content-block';
+    }
+    return null;
+  };
 
-    const blockStyleFn = (contentBlock: ContentBlock) => {
-      const type = contentBlock.getType();
-      if (type === 'unstyled') {
-        return 'content-block';
-      }
-      return null;
-    };
-
-    const handleKeyCommand = (command: string): DraftHandleValue => {
-      if (command === 'editor-save') {
-        dispatch(saveFile(activeFile.path, editorState));
-        return 'handled';
-      }
-      return 'not-handled';
-    };
-
-    return (
-      <Editor
-        blockStyleFn={blockStyleFn}
-        customStyleMap={styleMap}
-        editorState={editorState}
-        keyBindingFn={keyBindingFn}
-        handleKeyCommand={handleKeyCommand}
-        onChange={onChange}
-        spellCheck={true}
-      />
-    );
-  }
-);
+  return (
+    <Editor
+      blockStyleFn={blockStyleFn}
+      customStyleMap={styleMap}
+      editorState={editorState}
+      keyBindingFn={keyBindingFn}
+      onChange={onChange}
+      spellCheck={true}
+    />
+  );
+});
 
 export default DraftEditor;

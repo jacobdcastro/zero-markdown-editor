@@ -1,6 +1,7 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider as StoreProvider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { MarkdownContextProvider } from './MarkdownContext';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
 import { Store } from '../redux/reducers/types';
@@ -12,11 +13,13 @@ type Props = {
 };
 
 const Root = ({ store, history }: Props) => (
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Routes />
-    </ConnectedRouter>
-  </Provider>
+  <StoreProvider store={store}>
+    <MarkdownContextProvider>
+      <ConnectedRouter history={history}>
+        <Routes />
+      </ConnectedRouter>
+    </MarkdownContextProvider>
+  </StoreProvider>
 );
 
 export default hot(Root);
