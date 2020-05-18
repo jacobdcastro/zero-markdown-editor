@@ -6,7 +6,9 @@ export const SAVE_FILE = 'SAVE_FILE';
 export const DELETE_FILE = 'DELETE_FILE';
 
 // Editor
-export const CHANGE_EDITOR_MODE = 'CHANGE_EDITOR_MODE';
+export const ACTIVATE_RICH_MODE = 'ACTIVATE_RICH_MODE';
+export const ACTIVATE_PREVIEW_MODE = 'ACTIVATE_PREVIEW_MODE';
+export const ACTIVATE_RAW_MODE = 'ACTIVATE_RAW_MODE';
 
 // activeFile
 export const OPEN_MD_FILE = 'OPEN_MD_FILE';

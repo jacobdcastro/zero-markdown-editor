@@ -2,11 +2,14 @@ import { Action } from 'redux';
 import { OPEN_MD_FILE, SAVE_FILE, EDIT_CONTENTS } from '../actions/actionTypes';
 
 export default function activeFile(state = {}, action: Action<string>) {
-  switch (action.type) {
+  // @ts-ignore
+  const { type, payload } = action;
+
+  switch (type) {
     case OPEN_MD_FILE:
-      return { ...action.payload };
+      return { ...payload };
     case SAVE_FILE:
-      return { ...state, hasUnsavedEdits: false };
+      return { ...state, hasUnsavedEdits: false, content: payload };
     case EDIT_CONTENTS:
       return { ...state, hasUnsavedEdits: true };
     default:

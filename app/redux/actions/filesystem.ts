@@ -24,7 +24,7 @@ export function createFile(filePath: string) {
 
 export function saveFile(filePath: string, markdownString: string) {
   fs.writeFileSync(filePath, markdownString, { flag: 'w+' });
-  return { type: SAVE_FILE, msg: markdownString };
+  return { type: SAVE_FILE, payload: markdownString };
 }
 
 export function deleteFile(filePath: string) {
