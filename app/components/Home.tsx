@@ -1,8 +1,9 @@
 import React from 'react';
-import ZeroEditor from './EditorView/ZeroEditor';
+import RichEditor from './EditorViews/RichEditor';
 import Editor from './styled/Editor';
 import FileSidebar from './FileTreeView/FileSidebar';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const HomeWrapper = styled.div`
   display: flex;
@@ -11,11 +12,13 @@ const HomeWrapper = styled.div`
 `;
 
 const Home = () => {
+  const mode = useSelector(state => state.editor.mode);
+  console.log(mode);
   return (
     <HomeWrapper>
       <FileSidebar />
       <Editor data-tid="container" id="editor-container">
-        <ZeroEditor />
+        <RichEditor />
       </Editor>
     </HomeWrapper>
   );
