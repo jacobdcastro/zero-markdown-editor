@@ -5,13 +5,13 @@ import { EditorState, RichUtils } from 'draft-js';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeEdits } from '../../redux/actions/activeFile';
 import contentHasChanged from '../../helpers/contentHasChanged';
-import DraftEditor from './DraftEditor';
+import DraftEditor from './editors/DraftEditor';
 import {
   convertMdToDraft,
   convertDraftToMd
 } from '../../helpers/mdDraftConversion';
 
-const ZeroEditor = () => {
+const RichEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const activeFile = useSelector(state => state.activeFile);
   const editorMode = useSelector(state => state.editor.mode);
@@ -76,10 +76,11 @@ const ZeroEditor = () => {
           editorState={editorState}
           onChange={handleOnChange}
           activeFile={activeFile}
+          readonly={false}
         />
       </div>
     </div>
   );
 };
 
-export default ZeroEditor;
+export default RichEditor;
