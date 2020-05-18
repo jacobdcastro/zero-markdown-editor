@@ -7,7 +7,13 @@ import {
   MenuItemConstructorOptions,
   webContents
 } from 'electron';
-import { SAVE_FILE, CREATE_FILE } from './redux/actions/actionTypes';
+import {
+  SAVE_FILE,
+  CREATE_FILE,
+  ACTIVATE_RAW_MODE,
+  ACTIVATE_RICH_MODE,
+  ACTIVATE_PREVIEW_MODE
+} from './redux/actions/actionTypes';
 import { mainWindow } from './main.dev';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
@@ -210,7 +216,7 @@ export default class MenuBuilder {
           },
           {
             label: '&Save',
-            accelerator: 'Ctrl+S',
+            accelerator: 'CmdOrCtrl+S',
             click: () => {
               mainWindow?.webContents.send(SAVE_FILE);
             }
@@ -225,11 +231,57 @@ export default class MenuBuilder {
         ]
       },
       {
+        label: '&Edit',
+        submenu: [
+          {
+            label: 'Add h1',
+            click() {
+              shell.openExternal('https://electronjs.org');
+            }
+          },
+          {
+            label: 'Documentation',
+            click() {
+              shell.openExternal(
+                'https://github.com/electron/electron/tree/master/docs#readme'
+              );
+            }
+          },
+          {
+            label: 'Search Issues',
+            click() {
+              shell.openExternal('https://github.com/electron/electron/issues');
+            }
+          }
+        ]
+      },
+      {
         label: '&View',
         submenu:
           process.env.NODE_ENV === 'development' ||
           process.env.DEBUG_PROD === 'true'
             ? [
+                {
+                  label: '&Rich Mode',
+                  accelerator: 'Ctrl+R',
+                  click: () => {
+                    mainWindow?.webContents.send('CHANGE_MODE', 'rich');
+                  }
+                },
+                {
+                  label: '&Preview Mode',
+                  accelerator: 'Ctrl+R',
+                  click: () => {
+                    mainWindow?.webContents.send('CHANGE_MODE', 'preview');
+                  }
+                },
+                {
+                  label: '&Raw Mode',
+                  accelerator: 'Ctrl+R',
+                  click: () => {
+                    mainWindow?.webContents.send('CHANGE_MODE', 'raw');
+                  }
+                },
                 {
                   label: '&Reload',
                   accelerator: 'Ctrl+R',
