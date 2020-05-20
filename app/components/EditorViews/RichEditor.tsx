@@ -10,6 +10,7 @@ import {
   convertMdToDraft,
   convertDraftToMd
 } from '../../helpers/mdDraftConversion';
+import { checkForShortcut } from '../../helpers/mdShortcut';
 
 const RichEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -48,8 +49,8 @@ const RichEditor = () => {
 
   const handleOnChange = useCallback(
     (newState: EditorState) => {
-      setEditorState(newState);
-      const mdString = convertDraftToMd(newState);
+      setEditorState(checkForShortcut(newState));
+      const mdString = convertDraftToMd(checkForShortcut(newState));
       setMd(mdString);
       if (
         contentHasChanged(mdString, activeFile) &&

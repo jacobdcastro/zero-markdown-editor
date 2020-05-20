@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { EditorState } from 'draft-js';
 import EditorControlButton from '../styled/EditorControlButton';
 
@@ -41,10 +41,10 @@ export const BlockStyleControls = (props: {
   onToggle: Function;
 }) => {
   const { editorState } = props;
-  const selection = editorState.getSelection();
-  const blockType = editorState
+  const selection = editorState.getSelection().getStartKey();
+  const selectedBlockType = editorState
     .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
+    .getBlockForKey(selection)
     .getType();
 
   return (
@@ -52,7 +52,7 @@ export const BlockStyleControls = (props: {
       {BLOCK_TYPES.map(type => (
         <StyleButton
           key={type.label}
-          active={type.style === blockType}
+          active={type.style === selectedBlockType}
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}

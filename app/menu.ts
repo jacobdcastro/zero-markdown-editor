@@ -4,17 +4,9 @@ import {
   Menu,
   shell,
   BrowserWindow,
-  MenuItemConstructorOptions,
-  webContents
+  MenuItemConstructorOptions
 } from 'electron';
-import {
-  SAVE_FILE,
-  CREATE_FILE,
-  ACTIVATE_RAW_MODE,
-  ACTIVATE_RICH_MODE,
-  ACTIVATE_PREVIEW_MODE
-} from './redux/actions/actionTypes';
-import { mainWindow } from './main.dev';
+import { SAVE_FILE, CREATE_FILE } from './redux/actions/actionTypes';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -218,14 +210,14 @@ export default class MenuBuilder {
             label: '&Save',
             accelerator: 'CmdOrCtrl+S',
             click: () => {
-              mainWindow?.webContents.send(SAVE_FILE);
+              this.mainWindow.webContents.send(SAVE_FILE);
             }
           },
           {
             label: '&Save As',
-            accelerator: 'Ctrl+Shift+S',
+            accelerator: 'CmdOrCtrl+Shift+S',
             click: () => {
-              mainWindow?.webContents.send(CREATE_FILE);
+              this.mainWindow.webContents.send(CREATE_FILE);
             }
           }
         ]
@@ -235,6 +227,42 @@ export default class MenuBuilder {
         submenu: [
           {
             label: 'Add h1',
+            accelerator: 'CmdOrCtrl+1',
+            click() {
+              shell.openExternal('https://electronjs.org');
+            }
+          },
+          {
+            label: 'Add h2',
+            accelerator: 'CmdOrCtrl+2',
+            click() {
+              shell.openExternal('https://electronjs.org');
+            }
+          },
+          {
+            label: 'Add h3',
+            accelerator: 'CmdOrCtrl+3',
+            click() {
+              shell.openExternal('https://electronjs.org');
+            }
+          },
+          {
+            label: 'Add h4',
+            accelerator: 'CmdOrCtrl+4',
+            click() {
+              shell.openExternal('https://electronjs.org');
+            }
+          },
+          {
+            label: 'Add h5',
+            accelerator: 'CmdOrCtrl+5',
+            click() {
+              shell.openExternal('https://electronjs.org');
+            }
+          },
+          {
+            label: 'Add h6',
+            accelerator: 'CmdOrCtrl+6',
             click() {
               shell.openExternal('https://electronjs.org');
             }
@@ -263,23 +291,23 @@ export default class MenuBuilder {
             ? [
                 {
                   label: '&Rich Mode',
-                  accelerator: 'Ctrl+R',
+                  accelerator: 'F3',
                   click: () => {
-                    mainWindow?.webContents.send('CHANGE_MODE', 'rich');
+                    this.mainWindow.webContents.send('CHANGE_MODE', 'rich');
                   }
                 },
                 {
                   label: '&Preview Mode',
-                  accelerator: 'Ctrl+R',
+                  accelerator: 'F4',
                   click: () => {
-                    mainWindow?.webContents.send('CHANGE_MODE', 'preview');
+                    this.mainWindow.webContents.send('CHANGE_MODE', 'preview');
                   }
                 },
                 {
                   label: '&Raw Mode',
-                  accelerator: 'Ctrl+R',
+                  accelerator: 'F5',
                   click: () => {
-                    mainWindow?.webContents.send('CHANGE_MODE', 'raw');
+                    this.mainWindow.webContents.send('CHANGE_MODE', 'raw');
                   }
                 },
                 {
@@ -308,6 +336,27 @@ export default class MenuBuilder {
               ]
             : [
                 {
+                  label: 'Rich Mode',
+                  accelerator: 'Ctrl+R',
+                  click: () => {
+                    this.mainWindow.webContents.send('CHANGE_MODE', 'rich');
+                  }
+                },
+                {
+                  label: 'Preview Mode',
+                  accelerator: 'Ctrl+R',
+                  click: () => {
+                    this.mainWindow.webContents.send('CHANGE_MODE', 'preview');
+                  }
+                },
+                {
+                  label: 'Raw Mode',
+                  accelerator: 'Ctrl+R',
+                  click: () => {
+                    this.mainWindow.webContents.send('CHANGE_MODE', 'raw');
+                  }
+                },
+                {
                   label: 'Toggle &Full Screen',
                   accelerator: 'F11',
                   click: () => {
@@ -324,21 +373,23 @@ export default class MenuBuilder {
           {
             label: 'Learn More',
             click() {
-              shell.openExternal('https://electronjs.org');
+              shell.openExternal('https://jacobdcastro.com');
             }
           },
           {
-            label: 'Documentation',
+            label: 'View Source Code',
             click() {
               shell.openExternal(
-                'https://github.com/electron/electron/tree/master/docs#readme'
+                'https://github.com/jacobdcastro/zero-markdown-editor'
               );
             }
           },
           {
             label: 'Search Issues',
             click() {
-              shell.openExternal('https://github.com/electron/electron/issues');
+              shell.openExternal(
+                'https://github.com/jacobdcastro/zero-markdown-editor/issues'
+              );
             }
           }
         ]

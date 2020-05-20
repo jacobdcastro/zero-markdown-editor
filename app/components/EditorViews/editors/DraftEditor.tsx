@@ -1,6 +1,7 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Editor, EditorState, ContentBlock } from 'draft-js';
 import { fsNode } from '../../../helpers/buildFilesystemObj';
+import { checkForShortcut } from '../../../helpers/mdShortcut';
 
 interface DraftEditorProps {
   editorState: EditorState;
@@ -43,3 +44,7 @@ const DraftEditor = memo(
 );
 
 export default DraftEditor;
+
+// TODO get md shortcuts to work
+// 1. If space is inserted, see if previous text matches mdShortcut[]
+// 2. If there's a match, change block type and delete the selection
