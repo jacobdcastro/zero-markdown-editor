@@ -13,7 +13,7 @@ const EditorControlButton = styled.button`
     color: #ccc;
   }
 
-  .active {
+  .RichEditor-activeButton {
     background-color: #555;
     color: #ccc;
   }

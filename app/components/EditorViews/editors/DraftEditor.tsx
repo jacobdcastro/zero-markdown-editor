@@ -1,13 +1,16 @@
-import React, { memo, useEffect } from 'react';
+// @ts-nocheck
+import React, { memo } from 'react';
 import { Editor, EditorState, ContentBlock } from 'draft-js';
 import { fsNode } from '../../../helpers/buildFilesystemObj';
-import { checkForShortcut } from '../../../helpers/mdShortcut';
 
 interface DraftEditorProps {
   editorState: EditorState;
   onChange: (newState: EditorState) => void;
-  activeFile: fsNode;
+  activeFile?: fsNode;
+  keyBindingFn?: Function;
   readonly: boolean;
+  onFocus?: () => void;
+  onBlur?: Function;
 }
 
 // Custom overrides for "code" style.
@@ -21,22 +24,43 @@ const styleMap = {
 };
 
 const DraftEditor = memo(
-  ({ editorState, onChange, readonly }: DraftEditorProps) => {
+  ({
+    editorState,
+    onChange,
+    keyBindingFn,
+    readonly,
+    onFocus,
+    onBlur
+  }: DraftEditorProps) => {
     const blockStyleFn = (contentBlock: ContentBlock) => {
       const type = contentBlock.getType();
       if (type === 'unstyled') {
         return 'content-block';
       }
-      return null;
+      return '';
     };
+
+    // const handleReturn = (e: any, state: EditorState) => {
+    //   const newState = RichUtils.toggleBlockType(state, 'paragraph');
+    //   if (newState) {
+    //     onChange(newState);
+    //     return 'handled';
+    //   }
+    //   return 'not-handled';
+    // };
 
     return (
       <Editor
-        blockStyleFn={blockStyleFn}
-        customStyleMap={styleMap}
+        id="draftEditor"
         editorState={editorState}
         onChange={onChange}
+        blockStyleFn={blockStyleFn}
+        customStyleMap={styleMap}
         spellCheck={true}
+        keyBindingFn={keyBindingFn}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        // handleReturn={handleReturn}
         readonly={readonly}
       />
     );

@@ -2,7 +2,8 @@ import { getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
 const { hasCommandModifier } = KeyBindingUtil;
 
 const keyBindingFn = (e: any): string | null => {
-  if (e.keyCode === 83 /* `S` key */ && hasCommandModifier(e)) {
+  console.log(e.keyCode);
+  if (e.keyCode === 13 /* 'return' key */) {
     return 'editor-save';
   }
   return getDefaultKeyBinding(e);

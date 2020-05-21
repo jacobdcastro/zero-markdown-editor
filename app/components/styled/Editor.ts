@@ -5,6 +5,7 @@ const Editor = styled.div`
   height: 100vh;
   font-family: 'Helvetica', 'Arial', sans-serif;
   width: 100%;
+  overflow: hidden;
 
   .RichEditor-root {
     margin: 35px 225px 75px;
@@ -86,6 +87,10 @@ const Editor = styled.div`
 
   .RichEditor-editor {
     margin: 20px 10px;
+  }
+
+  .public-DraftEditor-content {
+    height: 100vh;
   }
 `;
 

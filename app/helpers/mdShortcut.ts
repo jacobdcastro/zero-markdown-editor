@@ -8,18 +8,19 @@ import {
 } from 'draft-js';
 
 // ? Helpers for the inline Markdown shortcuts!
-const SHORTCUTS = {
-  '*': 'list-item',
-  '-': 'list-item',
-  '+': 'list-item',
-  '>': 'block-quote',
-  '#': 'heading-one',
-  '##': 'heading-two',
-  '###': 'heading-three',
-  '####': 'heading-four',
-  '#####': 'heading-five',
-  '######': 'heading-six',
-  '```': 'code-block'
+const SHORTCUTS: any = {
+  '* ': 'unordered-list-item',
+  '- ': 'unordered-list-item',
+  '+ ': 'unordered-list-item',
+  '> ': 'blockquote',
+  '# ': 'header-one',
+  '## ': 'header-two',
+  '### ': 'header-three',
+  '#### ': 'header-four',
+  '##### ': 'header-five',
+  '###### ': 'header-six',
+  '```': 'code-block',
+  '! ': 'atomic'
 };
 
 export const checkForShortcut = (editorState: EditorState): EditorState => {
@@ -32,13 +33,15 @@ export const checkForShortcut = (editorState: EditorState): EditorState => {
 
   if (blockType) {
     var selection = SelectionState.createEmpty(blockKey);
-    const newContent = Modifier.replaceText(content, selection, '');
+    const newSelection = selection.merge({
+      focusOffset: selectedContentBlock.getLength(),
+      hasFocus: true
+    });
 
-    return EditorState.push(
-      RichUtils.toggleBlockType(editorState, blockType),
-      newContent,
-      blockType
-    );
+    // @ts-ignore
+    const newContent = Modifier.removeRange(content, newSelection, 'forward');
+    const newState = EditorState.push(editorState, newContent, 'remove-range');
+    return RichUtils.toggleBlockType(newState, blockType);
   }
 
   return editorState;

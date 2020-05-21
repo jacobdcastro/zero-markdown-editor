@@ -9,6 +9,8 @@ export const DELETE_FILE = 'DELETE_FILE';
 export const ACTIVATE_RICH_MODE = 'ACTIVATE_RICH_MODE';
 export const ACTIVATE_PREVIEW_MODE = 'ACTIVATE_PREVIEW_MODE';
 export const ACTIVATE_RAW_MODE = 'ACTIVATE_RAW_MODE';
+export const FOCUS_EDITOR = 'FOCUS_EDITOR';
+export const UNFOCUS_EDITOR = 'UNFOCUS_EDITOR';
 
 // activeFile
 export const OPEN_MD_FILE = 'OPEN_MD_FILE';
