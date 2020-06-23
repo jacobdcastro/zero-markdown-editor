@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { MarkdownContext } from '../../containers/MarkdownContext';
 import ReactSimpleEditor from './editors/ReactSimpleEditor';
+import { useSelector } from 'react-redux';
+import { RawEditorContainer } from '../styled/RawEditor';
 
 const RawEditor = () => {
+  const { md, setMd } = useContext(MarkdownContext);
+  const activeFile = useSelector(state => state.activeFile);
+
+  useEffect(() => setMd(activeFile.content), [activeFile.id]);
+
   return (
-    <div className="RawEditor-root">
-      <ReactSimpleEditor />
-    </div>
+    <RawEditorContainer className="RawEditor-root">
+      <ReactSimpleEditor md={md} setMd={setMd} />
+    </RawEditorContainer>
   );
 };
 

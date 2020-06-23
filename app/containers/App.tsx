@@ -38,5 +38,3 @@ export default function App(props: Props) {
 
   return <>{children}</>;
 }
-
-// TODO ipcRenderer running 4+ times on event??? why tf

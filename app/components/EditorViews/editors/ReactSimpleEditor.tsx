@@ -1,24 +1,57 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
-import { MarkdownContext } from '../../../containers/MarkdownContext';
+import Highlight, { defaultProps } from 'prism-react-renderer';
+import { Pre, Line, LineNo, LineContent } from '../../styled/RawEditor';
 
-const ReactSimpleEditor = () => {
-  const { md, setMd } = useContext(MarkdownContext);
+interface CodeProps {
+  md: string;
+}
+
+const HightlightedCode = ({ md }: CodeProps) => {
   return (
-    <Editor
-      value={md}
-      onValueChange={(code: string) => setMd(code)}
-      highlight={(code: string) => highlight(code, languages.js)}
-      padding={10}
-      style={{
-        fontFamily: '"Fira code", "Fira Mono", monospace',
-        fontSize: 12
-      }}
-    />
+    <Highlight {...defaultProps} code={md} language="markdown">
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <Pre className={className} style={style}>
+          {tokens.map((line, i) => (
+            <Line {...getLineProps({ line, key: i })}>
+              <LineNo>{i + 1}</LineNo>
+              <LineContent>
+                {line.map((token, key) => (
+                  <span {...getTokenProps({ token, key })} />
+                ))}
+              </LineContent>
+            </Line>
+          ))}
+        </Pre>
+      )}
+    </Highlight>
   );
+};
+
+interface EditorProps {
+  md: string;
+  setMd: Function;
+}
+
+const ReactSimpleEditor = ({ md, setMd }: EditorProps) => {
+  if (md) {
+    return (
+      <Editor
+        value={md}
+        onValueChange={(markdown: string) => setMd(markdown)}
+        highlight={(markdown: string) => (
+          <HightlightedCode md={markdown.trim()} />
+        )}
+        padding={25}
+        style={{
+          fontFamily: '"Fira code", "Fira Mono", monospace',
+          fontSize: 20
+        }}
+      />
+    );
+  } else {
+    return null;
+  }
 };
 
 export default ReactSimpleEditor;

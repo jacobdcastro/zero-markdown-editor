@@ -1,5 +1,5 @@
 import React from 'react';
-import RichEditor from './EditorViews/RichEditor';
+import { RichEditor, PreviewEditor, RawEditor } from './EditorViews';
 import Editor from './styled/Editor';
 import FileSidebar from './FileTreeView/FileSidebar';
 import styled from 'styled-components';
@@ -13,12 +13,20 @@ const HomeWrapper = styled.div`
 
 const Home = () => {
   const mode = useSelector(state => state.editor.mode);
-  console.log(mode);
+
+  const displayEditorView = () => {
+    if (mode === 'rich') return <RichEditor />;
+    if (mode === 'preview') return <PreviewEditor />;
+    if (mode === 'raw') return <RawEditor />;
+    return <RichEditor />;
+  };
+
   return (
     <HomeWrapper>
       <FileSidebar />
       <Editor data-tid="container" id="editor-container">
-        <RichEditor />
+        {/* {displayEditorView()} */}
+        <RawEditor />
       </Editor>
     </HomeWrapper>
   );
