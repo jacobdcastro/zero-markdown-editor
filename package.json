@@ -52,7 +52,7 @@
     ]
   },
   "build": {
-    "productName": "Zero Markdown Editor",
+    "productName": "zero-markdown-editor",
     "appId": "org.develar.ElectronReact",
     "files": [
       "dist/",
